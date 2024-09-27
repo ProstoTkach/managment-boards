@@ -6,7 +6,7 @@ import '../styles/Card.css';
 interface CardProps extends CardType {
   onDelete: (_id: string) => void;
   onEdit: (_id: string, title: string, description: string) => void;
-  fromColumn: string; // Add this prop
+  fromColumn: string;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -24,7 +24,7 @@ const Card: React.FC<CardProps> = ({
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'CARD',
-    item: { _id, index, fromColumn }, // Pass fromColumn here
+    item: { _id, index, fromColumn },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -43,7 +43,7 @@ const Card: React.FC<CardProps> = ({
     <div
       ref={drag}
       className={`card ${isDragging ? 'dragging' : ''}`}
-      style={{ opacity: isDragging ? 0.5 : 1 }} // Visual feedback for dragging
+      style={{ opacity: isDragging ? 0.5 : 1 }}
     >
       {isEditing ? (
         <div className="card-edit">

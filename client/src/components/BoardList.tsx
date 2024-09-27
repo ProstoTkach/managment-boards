@@ -12,38 +12,33 @@ import {
   moveCard,
   createBoard,
 } from '../redux/boardSlice';
-import '../styles/BoardList.css'; // Importing CSS for styling
+import '../styles/BoardList.css';
 
 const BoardList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const boards = useSelector((state: RootState) => state.boards.boards); // Use Redux state for boards
-  const [currentBoardId, setCurrentBoardId] = useState<string>(''); // Store current board ID for search/filter
+  const boards = useSelector((state: RootState) => state.boards.boards);
+  const [currentBoardId, setCurrentBoardId] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Fetch boards on mount
   useEffect(() => {
     dispatch(fetchBoards());
   }, [dispatch]);
 
-  // Filter boards by the current board ID
   const filteredBoards = currentBoardId
     ? boards.filter((board) => board._id === currentBoardId)
     : [];
 
-  // Search submit handler
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const searchTerm = event.currentTarget.searchBar.value.trim(); // Get search input
-    setCurrentBoardId(searchTerm); // Set current board ID for filtering
-    event.currentTarget.searchBar.value = ''; // Clear input
+    const searchTerm = event.currentTarget.searchBar.value.trim();
+    setCurrentBoardId(searchTerm);
+    event.currentTarget.searchBar.value = '';
   };
 
-  // Refresh boards after an action
   const refreshBoards = () => {
     dispatch(fetchBoards());
   };
 
-  // Handle card operations with a refresh
   const handleDeleteCard = (
     boardId: string,
     columnNumber: string,
@@ -51,7 +46,7 @@ const BoardList: React.FC = () => {
   ) => {
     dispatch(deleteCard({ boardId, columnNumber, cardId })).then(() =>
       refreshBoards(),
-    ); // Refresh boards after delete
+    );
   };
 
   const handleEditCard = (
@@ -87,7 +82,7 @@ const BoardList: React.FC = () => {
   ) => {
     dispatch(
       addCard({ boardId, index, columnNumber, title, description }),
-    ).then(() => refreshBoards()); // Refresh boards after add
+    ).then(() => refreshBoards());
   };
 
   const handleMoveCard = (
@@ -99,19 +94,18 @@ const BoardList: React.FC = () => {
   ) => {
     dispatch(moveCard({ boardId, fromColumn, toColumn, cardId, toIndex })).then(
       () => refreshBoards(),
-    ); // Refresh boards after add
+    );
   };
-  // Handle creation of a new board
   const handleCreateBoard = async () => {
     const boardName = prompt('Enter the name for the new board:');
     if (boardName) {
-      const boardId = uuidv4(); // Generate a unique ID for the board
+      const boardId = uuidv4();
       try {
         const resultAction = await dispatch(
           createBoard({ name: boardName, _id: boardId }),
-        ); // Include the ID in the payload
+        );
         if (createBoard.fulfilled.match(resultAction)) {
-          setCurrentBoardId(boardId); // Set the newly created board ID
+          setCurrentBoardId(boardId);
         }
         refreshBoards();
       } catch (error) {
@@ -119,15 +113,14 @@ const BoardList: React.FC = () => {
       }
     }
   };
-  // Handle delete board operation
   const handleDeleteBoard = async (boardId: string) => {
     const confirmDelete = window.confirm(
       'Are you sure you want to delete this board?',
     );
     if (confirmDelete) {
       try {
-        await dispatch(deleteBoard(boardId)); // Теперь это асинхронно
-        refreshBoards(); // Обновляем доски после удаления
+        await dispatch(deleteBoard(boardId));
+        refreshBoards();
       } catch (error) {
         console.error('Failed to delete board:', error);
       }

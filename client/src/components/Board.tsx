@@ -1,32 +1,32 @@
 import React from 'react';
-import { Board as BoardType } from '../redux/types'; // Importing interface
-import Card from './Card'; // Importing Card component
+import { Board as BoardType } from '../redux/types';
+import Card from './Card';
 import { useDrop } from 'react-dnd';
-import '../styles/Board.css'; // Importing CSS for styling
+import '../styles/Board.css';
 
 interface BoardProps extends BoardType {
-  onDeleteCard: (boardId: string, columnNumber: string, cardId: string) => void; // Function to delete a card
+  onDeleteCard: (boardId: string, columnNumber: string, cardId: string) => void;
   onEditCard: (
     boardId: string,
     columnNumber: string,
     cardId: string,
     title: string,
     description: string,
-  ) => void; // Function to edit a card
+  ) => void;
   addCard: (
     boardId: string,
     index: string,
     columnNumber: string,
     title: string,
     description: string,
-  ) => void; // Function to add a new card
+  ) => void;
   moveCard: (
     boardId: string,
     fromColumn: string,
     toColumn: string,
     cardId: string,
     toIndex: string,
-  ) => void; // Function to move a card
+  ) => void;
 }
 
 const Board: React.FC<BoardProps> = ({
@@ -43,7 +43,7 @@ const Board: React.FC<BoardProps> = ({
   const [{ isOver: isOverTodo }, dropTodo] = useDrop({
     accept: 'CARD',
     drop: (item: { _id: string; fromColumn: string }) => {
-      const toIndex = todo.length.toString(); // New card goes to the end of the To Do column
+      const toIndex = todo.length.toString();
       moveCard(_id, item.fromColumn, '1', item._id, toIndex);
     },
     collect: (monitor) => ({
@@ -54,7 +54,7 @@ const Board: React.FC<BoardProps> = ({
   const [{ isOver: isOverInProgress }, dropInProgress] = useDrop({
     accept: 'CARD',
     drop: (item: { _id: string; fromColumn: string }) => {
-      const toIndex = inProgress.length.toString(); // New card goes to the end of the In Progress column
+      const toIndex = inProgress.length.toString();
       moveCard(_id, item.fromColumn, '2', item._id, toIndex);
     },
     collect: (monitor) => ({
@@ -65,7 +65,7 @@ const Board: React.FC<BoardProps> = ({
   const [{ isOver: isOverDone }, dropDone] = useDrop({
     accept: 'CARD',
     drop: (item: { _id: string; fromColumn: string }) => {
-      const toIndex = done.length.toString(); // New card goes to the end of the Done column
+      const toIndex = done.length.toString();
       moveCard(_id, item.fromColumn, '3', item._id, toIndex);
     },
     collect: (monitor) => ({
@@ -98,7 +98,7 @@ const Board: React.FC<BoardProps> = ({
             <Card
               key={card._id}
               {...card}
-              fromColumn="1" // For To Do column
+              fromColumn="1"
               onDelete={() => onDeleteCard(_id, '1', card._id)}
               onEdit={(newId, newTitle, newDescription) =>
                 onEditCard(_id, '1', newId, newTitle, newDescription)
@@ -131,7 +131,7 @@ const Board: React.FC<BoardProps> = ({
             <Card
               key={card._id}
               {...card}
-              fromColumn="2" // For In Progress column
+              fromColumn="2"
               onDelete={() => onDeleteCard(_id, '2', card._id)}
               onEdit={(newId, newTitle, newDescription) =>
                 onEditCard(_id, '2', newId, newTitle, newDescription)
@@ -161,7 +161,7 @@ const Board: React.FC<BoardProps> = ({
             <Card
               key={card._id}
               {...card}
-              fromColumn="3" // For Done column
+              fromColumn="3"
               onDelete={() => onDeleteCard(_id, '3', card._id)}
               onEdit={(newId, newTitle, newDescription) =>
                 onEditCard(_id, '3', newId, newTitle, newDescription)

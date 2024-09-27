@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Board, Card } from './types'; // Импортируем интерфейсы Board и Card
+import { Board, Card } from './types';
 
 interface BoardState {
   boards: Board[];
@@ -9,7 +9,6 @@ const initialState: BoardState = {
   boards: [],
 };
 
-// Асинхронное действие для получения досок
 export const fetchBoards = createAsyncThunk<Board[]>(
   'boards/fetchBoards',
   async () => {
@@ -28,15 +27,14 @@ export const createBoard = createAsyncThunk<
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ name, _id }), // Include _id in the body
+    body: JSON.stringify({ name, _id }),
   });
   if (!response.ok) {
     throw new Error('Failed to create board');
   }
-  return response.json(); // Ensure your server returns the created board data
+  return response.json();
 });
 
-// Async action for deleting a board
 export const deleteBoard = createAsyncThunk<string, string>(
   'boards/deleteBoard',
   async (boardId) => {
@@ -49,11 +47,10 @@ export const deleteBoard = createAsyncThunk<string, string>(
     if (!response.ok) {
       throw new Error('Failed to delete board');
     }
-    return boardId; // Return the ID of the deleted board
+    return boardId;
   },
 );
 
-// Асинхронное действие для добавления карточки
 export const addCard = createAsyncThunk<
   Card,
   {
@@ -83,7 +80,6 @@ export const addCard = createAsyncThunk<
   },
 );
 
-// Асинхронное действие для обновления карточки
 export const updateCard = createAsyncThunk<
   Card,
   {
@@ -113,7 +109,6 @@ export const updateCard = createAsyncThunk<
   },
 );
 
-// Асинхронное действие для удаления карточки
 export const deleteCard = createAsyncThunk<
   string,
   { boardId: string; columnNumber: string; cardId: string }
@@ -127,7 +122,7 @@ export const deleteCard = createAsyncThunk<
   if (!response.ok) {
     throw new Error('Failed to delete card');
   }
-  return cardId; // Возвращаем ID удаленной карточки
+  return cardId;
 });
 
 export const moveCard = createAsyncThunk<
@@ -162,7 +157,7 @@ export const moveCard = createAsyncThunk<
     if (!response.ok) {
       throw new Error('Failed to move card');
     }
-    return response.json(); // Убедитесь, что это возвращает Card
+    return response.json();
   },
 );
 
@@ -176,10 +171,9 @@ const boardSlice = createSlice({
         state.boards = action.payload;
       })
       .addCase(createBoard.fulfilled, (state, action) => {
-        state.boards.push(action.payload); // Добавляем новую доску в состояние
+        state.boards.push(action.payload);
       })
       .addCase(deleteBoard.fulfilled, (state, action) => {
-        // Remove the deleted board from the state
         state.boards = state.boards.filter(
           (board) => board._id !== action.payload,
         );
@@ -189,11 +183,11 @@ const boardSlice = createSlice({
         const board = state.boards.find((board) => board._id === boardId);
         if (board) {
           if (columnNumber === '1') {
-            board.todo.push(action.payload); // Добавляем в "To Do"
+            board.todo.push(action.payload);
           } else if (columnNumber === '2') {
-            board.inProgress.push(action.payload); // Добавляем в "In Progress"
+            board.inProgress.push(action.payload);
           } else if (columnNumber === '3') {
-            board.done.push(action.payload); // Добавляем в "Done"
+            board.done.push(action.payload);
           }
         }
       })
@@ -211,7 +205,7 @@ const boardSlice = createSlice({
           }
           const cardIndex = cardList.findIndex((card) => card._id === cardId);
           if (cardIndex !== -1) {
-            cardList[cardIndex] = action.payload; // Обновляем карточку в соответствующей колонке
+            cardList[cardIndex] = action.payload;
           }
         }
       })
@@ -239,9 +233,8 @@ const boardSlice = createSlice({
         const board = state.boards.find((board) => board._id === boardId);
 
         if (board) {
-          const movedCard = action.payload; // Предполагаем, что API возвращает перемещённую карточку
+          const movedCard = action.payload;
 
-          // Удаляем карточку из исходной колонки
           let fromList: Card[] = [];
           if (fromColumn === '1') {
             fromList = board.todo;
@@ -253,10 +246,9 @@ const boardSlice = createSlice({
 
           const cardIndex = fromList.findIndex((c) => c._id === movedCard._id);
           if (cardIndex !== -1) {
-            fromList.splice(cardIndex, 1); // Удаляем карточку из исходной колонки
+            fromList.splice(cardIndex, 1);
           }
 
-          // Добавляем карточку в новую колонку на позицию toIndex
           let toList: Card[] = [];
           if (toColumn === '1') {
             toList = board.todo;
@@ -266,11 +258,10 @@ const boardSlice = createSlice({
             toList = board.done;
           }
 
-          toList.splice(Number(toIndex), 0, movedCard); // Вставляем карточку в новую колонку по индексу
+          toList.splice(Number(toIndex), 0, movedCard);
         }
       });
   },
 });
 
-// Экспортируем редьюсер
 export default boardSlice.reducer;

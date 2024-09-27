@@ -1,4 +1,3 @@
-// types.ts
 export interface Card {
   _id: string;
   index: string;
