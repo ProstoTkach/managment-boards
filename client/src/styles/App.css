@@ -1,0 +1,14 @@
+html,
+body {
+  margin: 0;
+  width: 100vw;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+}
+body h1 {
+  margin: 20px auto 0 auto;
+  color: #2786eb;
+  text-align: center;
+}

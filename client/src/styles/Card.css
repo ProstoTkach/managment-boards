@@ -1,0 +1,92 @@
+/* Card Add Animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Card Remove Animation */
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.card {
+  background-color: #f9f9f9; /* Light background for the card */
+  border: 1px solid #ddd; /* Border around the card */
+  border-radius: 8px; /* Rounded corners */
+  padding: 16px; /* Padding inside the card */
+  margin: 10px 0; /* Margin between cards */
+  text-align: left;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: transform 0.2s; /* Smooth hover effect */
+  animation: fadeIn 0.3s ease-in;
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.02); /* Slightly scale up on hover */
+}
+
+/* Add card hidden state when removing */
+.card.remove {
+  animation: fadeOut 0.3s ease-out;
+  opacity: 0;
+  transform: scale(0.95);
+}
+.card h4 {
+  margin: 0 0 10px 0;
+  text-align: left;
+}
+
+.card-edit,
+.card-view {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+}
+
+.card-edit input,
+.card-edit textarea {
+  border: 1px solid #ccc; /* Light border for input and textarea */
+  border-radius: 4px; /* Rounded corners for input and textarea */
+  padding: 8px; /* Padding inside input and textarea */
+  margin-bottom: 10px; /* Space below input and textarea */
+}
+
+.card-buttons {
+  display: flex; /* Flexbox for buttons */
+  justify-content: flex-end; /* Align buttons to the right */
+}
+
+.card-buttons button {
+  margin-left: 10px; /* Space between buttons */
+  background-color: #e6f2ff; /* Blue background for buttons */
+  border: 1px #2576ce solid; /* No border */
+  border-radius: 4px; /* Rounded corners */
+  padding: 4px 6px; /* Padding inside buttons */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.2s; /* Smooth background color transition */
+}
+
+.card-buttons button:hover {
+  background-color: #c6e1ff; /* Darker blue on hover */
+}
+
+.card-view p {
+  white-space: pre-wrap; /* Preserve line breaks in description */
+  word-break: break-word; /* Break long words that exceed the container width */
+  margin: 0 0 10px 0; /* Remove default margin */
+}

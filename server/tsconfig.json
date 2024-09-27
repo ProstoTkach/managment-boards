@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2020", // Установите более современную версию ECMAScript
+    "module": "ESNext", // Оставляем ESNext, чтобы использовать ES-модули
+    "moduleResolution": "node", // Резолвинг модулей для Node.js
+    "jsx": "react-jsx", // Оставляем, если проект React
+    "outDir": "./dist", // Папка для выходных файлов
+    "rootDir": "./src", // Папка с исходными файлами
+    "strict": true, // Включаем строгий режим TypeScript
+    "esModuleInterop": true, // Позволяет импортировать CommonJS модули, как ES6
+    "skipLibCheck": true, // Пропускаем проверку типов внутри node_modules
+    "forceConsistentCasingInFileNames": true // Следим за регистром файлов
+  },
+  "include": ["src/**/*"] // Включаем все файлы в папке src
+}

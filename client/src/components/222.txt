@@ -1,0 +1,237 @@
+import React, { useState } from 'react';
+import { Card as CardType } from '../redux/types';
+import { useDrag, useDrop } from 'react-dnd';
+import '../styles/Card.css';
+
+interface CardProps extends CardType {
+    onDelete: (_id: string) => void;
+    onEdit: (_id: string, title: string, description: string) => void;
+    fromColumn: string; // Add this prop
+    onMoveCard: (fromColumn: string, toColumn: string, fromIndex: string, toIndex: string, cardId: string) => void;
+}
+
+const Card: React.FC<CardProps> = ({ _id, index, title, description, fromColumn, onMoveCard, onDelete, onEdit }) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [newTitle, setNewTitle] = useState(title);
+    const [newDescription, setNewDescription] = useState(description);
+
+    const [{ isDragging }, drag] = useDrag(() => ({
+        type: 'CARD',
+        item: { _id, index, fromColumn }, // Pass fromColumn here
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    }));
+
+    const [, drop] = useDrop({
+        accept: 'CARD',
+        hover: (draggedItem: { _id: string, fromColumn: string, index: string }) => {
+            if (draggedItem._id !== _id && draggedItem.index !== index) {
+                onMoveCard(draggedItem.fromColumn, fromColumn, draggedItem.index.toString(), index.toString(), draggedItem._id);
+                draggedItem.index = index; // Update the index of the dragged card after swap
+            }
+        },
+    });
+
+    const handleSave = () => {
+        if (newTitle.trim() === '' || newDescription.trim() === '') {
+            alert('Title and description cannot be empty.');
+            return;
+        }
+        onEdit(_id, newTitle, newDescription);
+        setIsEditing(false);
+    };
+
+    return (
+        <div ref={(node) => drag(drop(node))} className={`card ${isDragging ? 'dragging' : ''}`}>
+            {isEditing ? (
+                <div className="card-edit">
+                    <input
+                        type="text"
+                        value={newTitle}
+                        onChange={(e) => setNewTitle(e.target.value)}
+                        placeholder="Card Title"
+                    />
+                    <textarea
+                        value={newDescription}
+                        onChange={(e) => setNewDescription(e.target.value)}
+                        placeholder="Card Description"
+                    />
+                    <div className="card-buttons">
+                        <button onClick={handleSave}>Save</button>
+                        <button onClick={() => setIsEditing(false)}>Cancel</button>
+                    </div>
+                </div>
+            ) : (
+                <div className="card-view">
+                    <h4>{title}</h4>
+                    <p>{description}</p>
+                    <div className="card-buttons">
+                        <button onClick={() => setIsEditing(true)}>Edit</button>
+                        <button onClick={() => onDelete(_id)}>Delete</button>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default Card;
+
+
+import React, { useState } from 'react';
+import { Board as BoardType } from '../redux/types'; // Importing interface
+import Card from './Card'; // Importing Card component
+import { useDrop } from 'react-dnd';
+import '../styles/Board.css'; // Importing CSS for styling
+
+interface BoardProps extends BoardType {
+    onDeleteCard: (boardId: string, columnNumber: string, cardId: string) => void; // Function to delete a card
+    onEditCard: (boardId: string, columnNumber: string, cardId: string, title: string, description: string) => void; // Function to edit a card
+    addCard: (boardId: string, index: string, columnNumber: string, title: string, description: string) => void; // Function to add a new card
+    moveCard: (boardId: string, fromColumn: string, toColumn: string, fromIndex: string, toIndex: string, cardId: string) => void;
+}
+
+const Board: React.FC<BoardProps> = ({ _id, name, todo, inProgress, done, onDeleteCard, onEditCard, addCard, moveCard }) => {
+    const [todoCards, setTodoCards] = useState(todo);
+    const [inProgressCards, setInProgressCards] = useState(inProgress);
+    const [doneCards, setDoneCards] = useState(done);
+
+    const handleMoveCardInColumn = (fromColumn: string, toColumn: string, fromIndex: string, toIndex: string, cardId: string) => {
+        moveCard(_id, fromColumn, toColumn, fromIndex, toIndex, cardId);
+    };
+    const handleCopyId = () => {
+        navigator.clipboard.writeText(_id);
+        alert(`ID ${_id} скопирован в буфер обмена`);
+    };
+
+
+    return (
+        <div className="board">
+            <h2>Board "{name}"</h2>
+            <div className="board-columns">
+                {/* To Do Column */}
+                <div className="column">
+                    <h3>To Do</h3>
+                    {todo.map((card, index) => (
+                        <Card
+                            key={card._id}
+                            {...card}
+                            fromColumn="1"
+                            onMoveCard={handleMoveCardInColumn}
+                            onDelete={() => onDeleteCard(_id, '1', card._id)}
+                            onEdit={(newId, newTitle, newDescription) => onEditCard(_id, '1', newId, newTitle, newDescription)}
+                        />
+                    ))}
+                    <button className="add-card-button" onClick={() => addCard(_id, todo.length.toString(), '1', 'New Task', 'Description')}>+</button>
+                </div>
+
+                {/* In Progress Column */}
+                <div className="column">
+                    <h3>In Progress</h3>
+                    {inProgress.map((card, index) => (
+                        <Card
+                            key={card._id}
+                            {...card}
+                            fromColumn="2"
+                            onMoveCard={handleMoveCardInColumn}
+                            onDelete={() => onDeleteCard(_id, '2', card._id)}
+                            onEdit={(newId, newTitle, newDescription) => onEditCard(_id, '2', newId, newTitle, newDescription)}
+                        />
+                    ))}
+                    <button className="add-card-button" onClick={() => addCard(_id, inProgress.length.toString(), '2', 'New Task', 'Description')}>+</button>
+                </div>
+
+                {/* Done Column */}
+                <div className="column">
+                    <h3>Done</h3>
+                    {done.map((card, index) => (
+                        <Card
+                            key={card._id}
+                            {...card}
+                            fromColumn="3"
+                            onMoveCard={handleMoveCardInColumn}
+                            onDelete={() => onDeleteCard(_id, '3', card._id)}
+                            onEdit={(newId, newTitle, newDescription) => onEditCard(_id, '3', newId, newTitle, newDescription)}
+                        />
+                    ))}
+                    <button className="add-card-button" onClick={() => addCard(_id, done.length.toString(), '3', 'New Task', 'Description')}>+</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Board;
+
+// Эндпоинт для перемещения карточки между колонками
+app.put('/api/boards/from/:fromColumn/to/:toColumn/:cardId', async (req, res) => {
+    const { fromColumn, toColumn, cardId } = req.params;
+    const { boardId, fromIndex, toIndex } = req.body;
+
+    try {
+        const board = await BoardModel.findById(boardId);
+        if (!board) {
+            return res.status(404).send('Board not found');
+        }
+
+        let cardToMove;
+
+        // Удаляем карточку из исходной колонки
+        switch (fromColumn) {
+            case '1': // To Do
+                cardToMove = board.todo.find(card => card._id === cardId);
+                if (cardToMove) {
+                    board.todo = board.done.filter(card => card._id !== cardId);
+                }
+                break;
+            case '2': // In Progress
+                cardToMove = board.inProgress.find(card => card._id === cardId);
+                if (cardToMove) {
+                    board.inProgress = board.done.filter(card => card._id !== cardId);
+                }
+                break;
+            case '3': // Done
+                cardToMove = board.done.find(card => card._id === cardId);
+                if (cardToMove) {
+                    board.done = board.done.filter(card => card._id !== cardId);
+                }
+                break;
+            default:
+                return res.status(400).send('Invalid fromColumn value');
+        }
+
+        if (!cardToMove) {
+            return res.status(404).send('Card not found in the specified column');
+        }
+
+        cardToMove.index = toIndex; // Устанавливаем новый индекс
+
+        // Добавляем карточку в целевую колонку
+        switch (toColumn) {
+            case '1': // To Do
+                board.todo.splice(parseInt(toIndex), 0, cardToMove);
+                break;
+            case '2': // In Progress
+                board.inProgress.splice(parseInt(toIndex), 0, cardToMove);
+                break;
+            case '3': // Done
+                board.done.splice(parseInt(toIndex), 0, cardToMove);
+                break;
+            default:
+                return res.status(400).send('Invalid toColumn value');
+        }
+
+        // Обновляем индексы всех карточек в целевой колонке
+        const targetColumn = toColumn === '1' ? board.todo : toColumn === '2' ? board.inProgress : board.done;
+        for (let i = 0; i < targetColumn.length; i++) {
+            targetColumn[i].index = i.toString(); // Устанавливаем индекс как строку
+        }
+
+        await board.save(); // Сохраняем изменения в доске
+        res.status(200).json(cardToMove); // Respond with the moved card
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});

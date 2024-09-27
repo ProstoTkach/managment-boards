@@ -1,0 +1,58 @@
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.board {
+  animation: fadeInUp 0.5s ease-in-out;
+}
+
+.column {
+  flex: 1; /* Each column takes equal width */
+  margin: 0 10px; /* Space between columns */
+  width: calc(33vw - 70px);
+  padding: 10px;
+  background-color: #f0f0f0; /* Light background for columns */
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add some shadow for depth */
+}
+
+h2,
+h3,
+h4 {
+  text-align: center; /* Center headings */
+}
+h2 {
+  color: #2786eb;
+}
+.add-card-button {
+  display: block;
+  margin: 10px auto 0 auto;
+  font-size: 30px;
+  color: white;
+  background-color: #419dff; /* Bootstrap primary color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 50px; /* Full width */
+  transition: transform 0.2s; /* Smooth hover effect */
+}
+
+.add-card-button:hover {
+  background-color: #2786eb; /* Darken button on hover */
+  transform: scale(1.1); /* Slightly scale up on hover */
+}
+
+.no-boards-text {
+  color: #2786eb;
+  margin: 10px auto 0 auto;
+  font-size: larger;
+  font-weight: bold;
+  animation: fadeInUp 0.5s ease-in-out;
+}

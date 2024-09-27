@@ -1,0 +1,79 @@
+body {
+  user-select: none; /* Prevent text selection */
+}
+
+.board-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  padding: 20px; /* Add some padding */
+}
+.top-bar {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.top-bar button,
+.delete-button {
+  height: 40px;
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #419dff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s; /* Smooth hover effect */
+}
+
+.top-bar button:hover {
+  background-color: #2786eb; /* Darken button on hover */
+  transform: scale(1.05); /* Slightly scale up on hover */
+}
+
+.search-form {
+  display: flex;
+  justify-content: center; /* Center the form */
+  margin-bottom: 20px; /* Space between search bar and columns */
+}
+
+.search-form input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px; /* Space between input and button */
+}
+
+.search-form button {
+  padding: 10px 15px;
+  font-size: 16px;
+}
+
+.board-columns {
+  display: flex;
+  justify-content: space-between; /* Space columns evenly */
+  width: 100%; /* Full width of the container */
+  max-width: 1200px; /* Limit the maximum width */
+  min-height: 300px;
+}
+
+.board-columns > div {
+  flex: 1; /* Make columns equal width */
+  margin: 0 10px; /* Space between columns */
+  padding: 10px;
+  background-color: #f8f9fa; /* Light background for columns */
+  border: 1px solid #ccc; /* Border for columns */
+  border-radius: 4px;
+}
+
+.delete-button {
+  display: block; /* Make the button a block element */
+  background-color: #e66262;
+  margin: 10px auto 0 auto;
+}
+.delete-button:hover {
+  background-color: #c73b3b;
+  transform: scale(1.05); /* Slightly scale up on hover */
+}
