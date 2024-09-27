@@ -34,7 +34,7 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
 1. Clone the repository:
    ```bash
    git clone https://github.com/ProstoTkach/managment-boards.git
-   cd task-management-boards
+   cd management-boards
 
 2. Open the folder "client" and install the dependencies:
    ```bash
