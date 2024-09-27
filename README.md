@@ -20,8 +20,8 @@ A simple and intuitive task management application built with React, Redux, and 
   - Prettier and ESLint (for code formatting and linting)
 
 - **Backend**:
-  - Express or NestJS (for API development)
-  - MongoDB or PostgreSQL (for data storage)
+  - Express (for API development)
+  - MongoDB (for data storage)
 
 ## Getting Started
 
@@ -32,24 +32,23 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
 ### Installation
 
 1. Clone the repository:
-
    ```bash
    git clone https://github.com/yourusername/task-management-boards.git
    cd task-management-boards
 
-2. Install the dependencies:
-
-
+2. Open the folder "client" and install the dependencies:
    ```bash
-    npm install
-  
-3. Start the development server:
+   npm install
 
+3. Open the folder "server", install the dependencies and build it:
    ```bash
-      npm start
+   npm install
+   npm run build
 
-Open your browser and navigate to http://localhost:3000.
-
+4. Start the development server in "client" and "server":
+   ```bash
+   npm start
+   
 ### Usage
 
 1. **Create a Board**: Click on the "Add Board" button to create a new board.
@@ -57,7 +56,6 @@ Open your browser and navigate to http://localhost:3000.
 2. **Add Cards**: 
    - Select a board.
    - Click the "+" button in the respective column ("To Do," "In Progress," or "Done") to add a new card.
-   - Enter the title and description for the card, then confirm to add it to the column.
 
 3. **Edit or Delete Cards**: 
    - Click on a card to open its details.
@@ -65,9 +63,6 @@ Open your browser and navigate to http://localhost:3000.
 
 4. **Drag and Drop**: 
    - Move cards between columns by clicking and dragging them to the desired column. The changes will be reflected in the state of the application.
-
-5. **View Boards**: 
-   - All created boards are displayed on the main page. Click on a board to view its cards and manage them.
 
 ### Features
 
@@ -82,7 +77,7 @@ Open your browser and navigate to http://localhost:3000.
 - **Redux Toolkit**: Simplified state management for React applications.
 - **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
 - **Express**: Back-end framework for handling API requests.
-- **MongoDB** or **PostgreSQL**: Database options for storing data.
+- **MongoDB**: Database options for storing data.
 
 ### Contribution
 
