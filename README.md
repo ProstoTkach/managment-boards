@@ -36,20 +36,17 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
    ```bash
    git clone https://github.com/yourusername/task-management-boards.git
    cd task-management-boards
-  bash```
 
 2. Install the dependencies:
 
 
    ```bash
     npm install
-  bash```
   
-Start the development server:
+3. Start the development server:
 
- ```bash
+   ```bash
       npm start
-bash```
 
 Open your browser and navigate to http://localhost:3000.
 
