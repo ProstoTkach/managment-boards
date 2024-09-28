@@ -14,19 +14,19 @@
 }
 
 .column {
-  flex: 1; /* Each column takes equal width */
-  margin: 0 10px; /* Space between columns */
+  flex: 1;
+  margin: 0 10px;
   width: calc(33vw - 70px);
   padding: 10px;
-  background-color: #f0f0f0; /* Light background for columns */
+  background-color: #f0f0f0;
   border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add some shadow for depth */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 h2,
 h3,
 h4 {
-  text-align: center; /* Center headings */
+  text-align: center; 
 }
 h2 {
   color: #2786eb;
@@ -36,17 +36,17 @@ h2 {
   margin: 10px auto 0 auto;
   font-size: 30px;
   color: white;
-  background-color: #419dff; /* Bootstrap primary color */
+  background-color: #419dff; 
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 50px; /* Full width */
-  transition: transform 0.2s; /* Smooth hover effect */
+  width: 50px; 
+  transition: transform 0.2s; 
 }
 
 .add-card-button:hover {
-  background-color: #2786eb; /* Darken button on hover */
-  transform: scale(1.1); /* Slightly scale up on hover */
+  background-color: #2786eb; 
+  transform: scale(1.1); 
 }
 
 .no-boards-text {
