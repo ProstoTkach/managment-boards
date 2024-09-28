@@ -36,16 +36,15 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
    git clone https://github.com/ProstoTkach/managment-boards.git
    cd management-boards
 
-2. Open the folder "client" and install the dependencies:
+2. Install the dependencies:
    ```bash
    npm install
 
-3. Open the folder "server", install the dependencies and build it:
+3. Build the project:
    ```bash
-   npm install
    npm run build
 
-4. Start the development server in "client" and "server":
+4. Start the development server:
    ```bash
    npm start
    
